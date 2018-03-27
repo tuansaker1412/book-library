@@ -43,10 +43,10 @@
               <td>{{ book.nts }}</td>
               {% if book.sv == false %}
                 <td>Chưa mượn</td>
-                <td><a id="{{ book.id }}" class="waves-effect waves-light btn" onClick="borrow(this.id);">Mượn sách</a></td>
+                <td><a data-id="{{ book.id }}" class="waves-effect waves-light btn btn-muon-sach">Mượn sách</a></td>
               {% else %}
                 <td>Đang mượn</td>
-                <td><a id="{{ book.id }}" class="waves-effect waves-light btn red" onClick="give_back(this.id);">Trả sách</a></td>
+                <td><a data-id="{{ book.id }}" class="waves-effect waves-light btn red" onClick="give_back(this.id);">Trả sách</a></td>
               {% endif %}
             </tr>
           {% endfor %}
@@ -55,13 +55,31 @@
     </div>
   </div>
 </body>
+<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
 <script>
-  function borrow(id) {
-    console.log(id)
-  }
-  function give_back(id) {
-    console.log(id)
-  }
+  (function (cbFb) {
+    cbFb(window.jQuery)
+  })(function ($) {
+    $(pageLoadReaddy)
+
+    function pageLoadReaddy() {
+      var $btnMuonSach = $('.btn-muon-sach')
+
+      $btnMuonSach.on('click', function (event) {
+        event.preventDefault()
+        var btnMuon = $(event.currentTarget)
+        var idBook = btnMuon.data('id')
+        console.log(idBook)
+        $.ajax({
+          url: `/api/v1/edit/${idBook}`,
+          type: 'POST'
+        })
+        .done(function (data) {
+          window.location.reload(true)
+        })
+      })
+    }
+  })
 </script>
 </html>
