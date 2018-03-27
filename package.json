@@ -1,0 +1,19 @@
+{
+  "name": "book-web",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "tuan",
+  "license": "MIT",
+  "scripts": {
+    "serve:dev": "pm2-dev src/index.js"
+  },
+  "dependencies": {
+    "knex": "0.14.4",
+    "koa": "2.5.0",
+    "koa-router": "7.4.0",
+    "koa-views": "6.1.4",
+    "mysql": "2.15.0",
+    "nunjucks": "3.1.2",
+    "pm2": "2.10.1"
+  }
+}
