@@ -46,7 +46,7 @@
                 <td><a data-id="{{ book.id }}" class="waves-effect waves-light btn btn-muon-sach">Mượn sách</a></td>
               {% else %}
                 <td>Đang mượn</td>
-                <td><a data-id="{{ book.id }}" class="waves-effect waves-light btn red" onClick="give_back(this.id);">Trả sách</a></td>
+                <td><a data-id="{{ book.id }}" class="waves-effect waves-light btn red btn-tra-sach">Trả sách</a></td>
               {% endif %}
             </tr>
           {% endfor %}
@@ -65,6 +65,7 @@
 
     function pageLoadReaddy() {
       var $btnMuonSach = $('.btn-muon-sach')
+      var $btnTraSach = $('.btn-tra-sach')
 
       $btnMuonSach.on('click', function (event) {
         event.preventDefault()
@@ -73,6 +74,20 @@
         console.log(idBook)
         $.ajax({
           url: `/api/v1/edit/${idBook}`,
+          type: 'POST'
+        })
+        .done(function (data) {
+          window.location.reload(true)
+        })
+      })
+
+      $btnTraSach.on('click', function (event) {
+        event.preventDefault()
+        var btnTra = $(event.currentTarget)
+        var idBook = btnTra.data('id')
+        console.log(idBook)
+        $.ajax({
+          url: `/api/v1/book/${idBook}`,
           type: 'POST'
         })
         .done(function (data) {

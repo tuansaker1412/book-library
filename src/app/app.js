@@ -14,7 +14,7 @@ const knex = require('knex')({
   connection: {
     host: 'localhost',
     user: 'root',
-    password: '12345678',
+    password: 'root',
     database: 'booklibrary'
   }
 })
@@ -33,21 +33,20 @@ router.post('/api/v1/book/:id', async (ctx, next) => {
   const idBook = ctx.params.id
 
   const book = await knex('books').where('id', idBook)
-  if (book[0].number >= 2) {
-    const success = await knex('books')
-      .where('id', idBook)
-      .update('sv', true)
-    if (success) {
-      ctx.body = {
-        success: true,
-        message: `Update success`
-      }
-      return ctx.body
+  const update = await knex('books')
+    .where('id', idBook)
+    .update({sv: false, number: book[0].number + 1})
+  if (update) {
+    ctx.body = {
+      success: true,
+      message: `Update success`
     }
-  }
-  ctx.body = {
-    success: false,
-    message: `Update false`
+    return ctx.body
+  } else {
+    ctx.body = {
+      success: false,
+      message: `Update false`
+    }
   }
   return ctx.body
 })
@@ -59,7 +58,7 @@ router.post('/api/v1/edit/:id', async (ctx, next) => {
   if (book[0].number >= 2) {
     const success = await knex('books')
       .where('id', idBook)
-      .update('sv', true)
+      .update({sv: true, number: book[0].number - 1})
     if (success) {
       ctx.body = {
         success: true,
